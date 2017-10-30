@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (class, classList, href, src, target, type_, width)
+import Html.Attributes exposing (attribute, class, classList, href, src, target, type_, width)
 import Html.Events exposing (onClick)
 import Http
 import Json.Decode as Decode exposing (Decoder, Value)
@@ -12,7 +12,8 @@ import Json.Decode.Pipeline as Pipeline exposing (decode, optional, required)
 
 
 type alias Model =
-    { portfolio : Portfolio
+    { errorMessage : String
+    , portfolio : Portfolio
     , selectedCategoryId : Maybe Int
     , selectedItemId : Maybe Int
     , apiUrl : String
@@ -42,7 +43,8 @@ type alias Item =
 
 initialModel : String -> Model
 initialModel url =
-    { portfolio =
+    { errorMessage = ""
+    , portfolio =
         { categories = []
         , items = []
         }
@@ -127,13 +129,19 @@ viewCategoryButton selectedCategoryId category =
 
 
 viewItems : Model -> Int -> Maybe Item -> Html Msg
-viewItems { portfolio } selectedCategoryId selectedItemId =
+viewItems { portfolio, errorMessage } selectedCategoryId selectedItemId =
     let
         filteredItems =
             portfolio.items |> List.filter (\i -> i.categoryId == selectedCategoryId) |> List.map viewItem
+
+        contents =
+            if String.isEmpty errorMessage then
+                div [ class "row items-container" ]
+                    filteredItems
+            else
+                viewError errorMessage
     in
-    div [ class "row items-container" ]
-        filteredItems
+    contents
 
 
 viewItem : Item -> Html Msg
@@ -168,6 +176,14 @@ viewSelectedItem item =
         contents
 
 
+viewError : String -> Html Msg
+viewError error =
+    div [ class "alert alert-danger", attribute "role" "alert" ]
+        [ strong []
+            [ text error ]
+        ]
+
+
 
 -- Update
 
@@ -196,10 +212,10 @@ update msg model =
 
                 Err error ->
                     let
-                        x =
-                            Debug.log "Err error" error
+                        errorMessage =
+                            "An error occurred: " ++ toString error
                     in
-                    ( model, Cmd.none )
+                    ( { model | errorMessage = errorMessage }, Cmd.none )
 
         CategoryClicked categoryId ->
             let
