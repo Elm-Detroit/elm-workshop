@@ -1,8 +1,8 @@
 module Main exposing (..)
 
 import Dialog
-import Html exposing (Html, br, button, div, h1, h3, header, hr, img, nav, text)
-import Html.Attributes exposing (class, classList, src, type_, width)
+import Html exposing (Html, a, br, button, div, h1, h3, header, hr, img, nav, text)
+import Html.Attributes exposing (class, classList, href, src, target, type_, width)
 import Html.Events exposing (onClick)
 import Http
 import Json.Decode as Decode exposing (Decoder)
@@ -140,6 +140,9 @@ viewSelectedItem item =
                         [ h3 [] [ text detail.title ]
                         , hr [] []
                         , text detail.description
+                        , br [] []
+                        , br [] []
+                        , a [ href detail.linkUrl, target "_blank" ] [ text detail.linkUrl ]
                         ]
                     ]
     in
