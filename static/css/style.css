@@ -22,21 +22,20 @@ h1 {
     width: 280px;
 }
 
-.items-container {
-    margin-top: 25px;
-    border-bottom: 1px solid #dfdfdf;
-    border-top: 1px solid #dfdfdf;
-    padding: 50px;
-}
-
 .intro-message {
     padding: 48px;
     font-size: 48px;
     text-align: center;
 }
 
-.item-panel {
-    margin-bottom: 15px;
+
+.nav-category  {
+    text-align: center !important;
+    padding: 3px;
+}
+
+.selected-item-container {
+    padding-top: 25px;
 }
 
 .item-panel img , .selected-item-container img {
@@ -45,15 +44,17 @@ h1 {
     cursor: pointer;
 }
 
-.nav-category  {
-    text-align: center !important;
-    padding: 3px;
+.item-panel {
+    margin-bottom: 15px;
+}
+
+.items-container {
+    margin-top: 25px;
+    border-bottom: 1px solid #dfdfdf;
+    border-top: 1px solid #dfdfdf;
+    padding: 50px;
 }
 
 .btn-category {
     cursor: pointer !important;
-}
-
-.selected-item-container {
-    padding-top: 25px;
 }

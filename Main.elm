@@ -101,6 +101,18 @@ viewCategoryButton selectedCategoryId category =
         categorySelected =
             selectedCategoryId == category.id
 
+        buttonsBaseAttrs =
+            [ type_ "button", classes ]
+
+        buttonOnClick =
+            if categorySelected then
+                []
+            else
+                [ onClick (CategoryClicked category.id) ]
+
+        buttonAttrs =
+            buttonsBaseAttrs ++ buttonOnClick
+
         classes =
             classList
                 [ ( "btn btn-category", True )
@@ -108,7 +120,7 @@ viewCategoryButton selectedCategoryId category =
                 , ( "btn-secondary", not categorySelected )
                 ]
     in
-    button [ type_ "button", classes, onClick (CategoryClicked category.id) ] [ text category.label ]
+    button buttonAttrs [ text category.label ]
 
 
 viewItems { portfolio } selectedCategoryId selectedItemId =
