@@ -1,7 +1,7 @@
 module Main exposing (..)
 
-import Html exposing (Html, div, h1, header, img, text)
-import Html.Attributes exposing (class, src, width)
+import Html exposing (Html, br, button, div, h1, header, hr, img, nav, text)
+import Html.Attributes exposing (class, classList, src, type_, width)
 import Http
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline as Pipeline exposing (decode, optional, required)
@@ -53,14 +53,74 @@ initialModel =
 
 view : Model -> Html Msg
 view model =
+    let
+        portfolio =
+            model.portfolio
+
+        selectedCategoryId =
+            case model.selectedCategoryId of
+                Nothing ->
+                    1
+
+                Just selected ->
+                    selected
+    in
     div [ class "container" ]
         [ div [ class "row" ]
             [ div
                 [ class "col"
                 ]
-                [ text "Hello Workshop!" ]
+                [ br [] [] ]
+            ]
+        , div [ class "row" ]
+            [ div
+                [ class "col"
+                ]
+                [ h1 [] [ text "Elmfolio" ] ]
+            ]
+        , viewCategoryNavbar portfolio selectedCategoryId
+        , viewItems portfolio selectedCategoryId
+        ]
+
+
+viewCategoryNavbar { categories } selectedCategoryId =
+    div [ class "row" ]
+        [ div
+            [ class "col" ]
+            [ div [ class "nav-category" ]
+                (List.map (viewCategoryButton selectedCategoryId) categories)
             ]
         ]
+
+
+viewCategoryButton selectedCategoryId category =
+    let
+        categorySelected =
+            selectedCategoryId == category.id
+
+        classes =
+            classList
+                [ ( "btn", True )
+                , ( "btn-primary", categorySelected )
+                , ( "btn-secondary", not categorySelected )
+                ]
+    in
+    button [ type_ "button", classes ] [ text category.label ]
+
+
+viewItems { items } selectedCategoryId =
+    let
+        filteredItems =
+            items |> List.filter (\i -> i.categoryId == selectedCategoryId) |> List.map viewItem
+    in
+    div [ class "row items-container" ]
+        filteredItems
+
+
+viewItem item =
+    div
+        [ class "col-4 item-panel" ]
+        [ img [ src item.imageUrl ] [] ]
 
 
 
@@ -80,7 +140,10 @@ update msg model =
                 Ok response ->
                     let
                         updatedModel =
-                            { model | portfolio = response }
+                            { model
+                                | portfolio = response
+                                , selectedCategoryId = Just 1
+                            }
 
                         x =
                             Debug.log "Ok portfolio" updatedModel

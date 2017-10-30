@@ -22,8 +22,30 @@ h1 {
     width: 280px;
 }
 
+.items-container {
+    margin-top: 25px;
+    border-bottom: 1px solid #dfdfdf;
+    border-top: 1px solid #dfdfdf;
+    padding: 50px;
+}
+
 .intro-message {
     padding: 48px;
     font-size: 48px;
     text-align: center;
+}
+
+.item-panel {
+    margin-bottom: 15px;
+}
+
+.item-panel img {
+    width: 90%;
+    padding: 4px;
+    border: 1px solid #a9a9a9;
+}
+
+.nav-category  {
+    text-align: center !important;
+    padding: 3px;
 }
