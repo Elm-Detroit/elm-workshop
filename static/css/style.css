@@ -43,9 +43,14 @@ h1 {
     width: 90%;
     padding: 4px;
     border: 1px solid #a9a9a9;
+    cursor: pointer;
 }
 
 .nav-category  {
     text-align: center !important;
     padding: 3px;
+}
+
+.btn-category {
+    cursor: pointer !important;
 }

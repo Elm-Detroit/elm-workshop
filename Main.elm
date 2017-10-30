@@ -2,6 +2,7 @@ module Main exposing (..)
 
 import Html exposing (Html, br, button, div, h1, header, hr, img, nav, text)
 import Html.Attributes exposing (class, classList, src, type_, width)
+import Html.Events exposing (onClick)
 import Http
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline as Pipeline exposing (decode, optional, required)
@@ -100,12 +101,12 @@ viewCategoryButton selectedCategoryId category =
 
         classes =
             classList
-                [ ( "btn", True )
+                [ ( "btn btn-category", True )
                 , ( "btn-primary", categorySelected )
                 , ( "btn-secondary", not categorySelected )
                 ]
     in
-    button [ type_ "button", classes ] [ text category.label ]
+    button [ type_ "button", classes, onClick (CategoryClicked category.id) ] [ text category.label ]
 
 
 viewItems { items } selectedCategoryId =
@@ -129,6 +130,7 @@ viewItem item =
 
 type Msg
     = ApiResponse (Result Http.Error Portfolio)
+    | CategoryClicked Int
     | None
 
 
@@ -144,9 +146,6 @@ update msg model =
                                 | portfolio = response
                                 , selectedCategoryId = Just 1
                             }
-
-                        x =
-                            Debug.log "Ok portfolio" updatedModel
                     in
                     ( updatedModel, Cmd.none )
 
@@ -156,6 +155,15 @@ update msg model =
                             Debug.log "Err error" error
                     in
                     ( model, Cmd.none )
+
+        CategoryClicked categoryId ->
+            let
+                updatedModel =
+                    { model
+                        | selectedCategoryId = Just categoryId
+                    }
+            in
+            ( updatedModel, Cmd.none )
 
         None ->
             ( model, Cmd.none )
@@ -177,7 +185,7 @@ getPortfolio : Cmd Msg
 getPortfolio =
     let
         url =
-            "http://www.mocky.io/v2/59f508453100005c065b870f"
+            "http://www.mocky.io/v2/59f748f62f000070135585d0"
     in
     Http.send ApiResponse (Http.get url portfolioDecoder)
 
