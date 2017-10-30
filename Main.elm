@@ -1,7 +1,6 @@
 module Main exposing (..)
 
-import Dialog
-import Html exposing (Html, a, br, button, div, h1, h3, header, hr, img, nav, text)
+import Html exposing (..)
 import Html.Attributes exposing (class, classList, href, src, target, type_, width)
 import Html.Events exposing (onClick)
 import Http
@@ -88,6 +87,7 @@ view model =
         ]
 
 
+viewCategoryNavbar : Portfolio -> Int -> Html Msg
 viewCategoryNavbar { categories } selectedCategoryId =
     div [ class "row" ]
         [ div
@@ -98,6 +98,7 @@ viewCategoryNavbar { categories } selectedCategoryId =
         ]
 
 
+viewCategoryButton : Int -> Category -> Html Msg
 viewCategoryButton selectedCategoryId category =
     let
         categorySelected =
@@ -125,6 +126,7 @@ viewCategoryButton selectedCategoryId category =
     button buttonAttrs [ text category.label ]
 
 
+viewItems : Model -> Int -> Maybe Item -> Html Msg
 viewItems { portfolio } selectedCategoryId selectedItemId =
     let
         filteredItems =
@@ -134,12 +136,14 @@ viewItems { portfolio } selectedCategoryId selectedItemId =
         filteredItems
 
 
+viewItem : Item -> Html Msg
 viewItem item =
     div
         [ class "col-4 item-panel" ]
         [ img [ src item.imageUrl, onClick (ItemClicked item.id), class "img-fluid" ] [] ]
 
 
+viewSelectedItem : Maybe Item -> Html msg
 viewSelectedItem item =
     let
         contents =
@@ -224,6 +228,7 @@ update msg model =
 -- Subscriptions
 
 
+subscriptions : a -> Sub msg
 subscriptions =
     \_ -> Sub.none
 
@@ -276,6 +281,7 @@ itemDecoder =
     (,)
 
 
+getSelectedCategoryId : Model -> Int
 getSelectedCategoryId { portfolio, selectedCategoryId } =
     let
         firstCategory =
@@ -295,6 +301,7 @@ getSelectedCategoryId { portfolio, selectedCategoryId } =
     updatedSelectedCategoryId
 
 
+getSelectedItem : Model -> Int -> Maybe Item
 getSelectedItem { portfolio, selectedItemId } selectedCategoryId =
     case selectedItemId of
         Nothing ->
@@ -320,5 +327,6 @@ main =
         }
 
 
+init : String -> ( Model, Cmd Msg )
 init url =
     ( initialModel url, getPortfolio url )
