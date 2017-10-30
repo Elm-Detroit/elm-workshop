@@ -5,7 +5,7 @@ import Html exposing (Html, a, br, button, div, h1, h3, header, hr, img, nav, te
 import Html.Attributes exposing (class, classList, href, src, target, type_, width)
 import Html.Events exposing (onClick)
 import Http
-import Json.Decode as Decode exposing (Decoder)
+import Json.Decode as Decode exposing (Decoder, Value)
 import Json.Decode.Pipeline as Pipeline exposing (decode, optional, required)
 
 
@@ -16,6 +16,7 @@ type alias Model =
     { portfolio : Portfolio
     , selectedCategoryId : Maybe Int
     , selectedItemId : Maybe Int
+    , apiUrl : String
     }
 
 
@@ -40,14 +41,15 @@ type alias Item =
     }
 
 
-initialModel : Model
-initialModel =
+initialModel : String -> Model
+initialModel url =
     { portfolio =
         { categories = []
         , items = []
         }
     , selectedCategoryId = Nothing
     , selectedItemId = Nothing
+    , apiUrl = url
     }
 
 
@@ -230,12 +232,8 @@ subscriptions =
 -- Http
 
 
-getPortfolio : Cmd Msg
-getPortfolio =
-    let
-        url =
-            "http://www.mocky.io/v2/59f748f62f000070135585d0"
-    in
+getPortfolio : String -> Cmd Msg
+getPortfolio url =
     Http.send ApiResponse (Http.get url portfolioDecoder)
 
 
@@ -312,9 +310,9 @@ getSelectedItem { portfolio, selectedItemId } selectedCategoryId =
 -- Program Initialization
 
 
-main : Program Never Model Msg
+main : Program String Model Msg
 main =
-    Html.program
+    Html.programWithFlags
         { view = view
         , update = update
         , init = init
@@ -322,5 +320,5 @@ main =
         }
 
 
-init =
-    ( initialModel, getPortfolio )
+init url =
+    ( initialModel url, getPortfolio url )
