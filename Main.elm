@@ -1,5 +1,6 @@
 module Main exposing (..)
 
+import Dialog
 import Html exposing (Html, br, button, div, h1, header, hr, img, nav, text)
 import Html.Attributes exposing (class, classList, src, type_, width)
 import Html.Events exposing (onClick)
@@ -14,6 +15,7 @@ import Json.Decode.Pipeline as Pipeline exposing (decode, optional, required)
 type alias Model =
     { portfolio : Portfolio
     , selectedCategoryId : Maybe Int
+    , selectedItemId : Maybe Int
     }
 
 
@@ -45,6 +47,7 @@ initialModel =
         , items = []
         }
     , selectedCategoryId = Nothing
+    , selectedItemId = Nothing
     }
 
 
@@ -59,12 +62,10 @@ view model =
             model.portfolio
 
         selectedCategoryId =
-            case model.selectedCategoryId of
-                Nothing ->
-                    1
+            getSelectedCategoryId model
 
-                Just selected ->
-                    selected
+        selectedItem =
+            getSelectedItem model selectedCategoryId
     in
     div [ class "container" ]
         [ div [ class "row" ]
@@ -80,7 +81,8 @@ view model =
                 [ h1 [] [ text "Elmfolio" ] ]
             ]
         , viewCategoryNavbar portfolio selectedCategoryId
-        , viewItems portfolio selectedCategoryId
+        , viewSelectedItem selectedItem
+        , viewItems model selectedCategoryId selectedItem
         ]
 
 
@@ -109,10 +111,10 @@ viewCategoryButton selectedCategoryId category =
     button [ type_ "button", classes, onClick (CategoryClicked category.id) ] [ text category.label ]
 
 
-viewItems { items } selectedCategoryId =
+viewItems { portfolio } selectedCategoryId selectedItemId =
     let
         filteredItems =
-            items |> List.filter (\i -> i.categoryId == selectedCategoryId) |> List.map viewItem
+            portfolio.items |> List.filter (\i -> i.categoryId == selectedCategoryId) |> List.map viewItem
     in
     div [ class "row items-container" ]
         filteredItems
@@ -121,7 +123,21 @@ viewItems { items } selectedCategoryId =
 viewItem item =
     div
         [ class "col-4 item-panel" ]
-        [ img [ src item.imageUrl ] [] ]
+        [ img [ src item.imageUrl, onClick (ItemClicked item.id) ] [] ]
+
+
+viewSelectedItem item =
+    let
+        contents =
+            case item of
+                Nothing ->
+                    []
+
+                Just itemDetail ->
+                    [ text <| toString itemDetail.id ]
+    in
+    div [ class "row selected-item-container" ]
+        contents
 
 
 
@@ -131,6 +147,7 @@ viewItem item =
 type Msg
     = ApiResponse (Result Http.Error Portfolio)
     | CategoryClicked Int
+    | ItemClicked Int
     | None
 
 
@@ -161,6 +178,15 @@ update msg model =
                 updatedModel =
                     { model
                         | selectedCategoryId = Just categoryId
+                    }
+            in
+            ( updatedModel, Cmd.none )
+
+        ItemClicked itemId ->
+            let
+                updatedModel =
+                    { model
+                        | selectedItemId = Just itemId
                     }
             in
             ( updatedModel, Cmd.none )
@@ -227,6 +253,36 @@ itemDecoder =
 (=>) : a -> b -> ( a, b )
 (=>) =
     (,)
+
+
+getSelectedCategoryId { portfolio, selectedCategoryId } =
+    let
+        firstCategory =
+            portfolio.categories
+                |> List.head
+                |> Maybe.map .id
+                |> Maybe.withDefault 1
+
+        updatedSelectedCategoryId =
+            case selectedCategoryId of
+                Nothing ->
+                    firstCategory
+
+                Just selected ->
+                    selected
+    in
+    updatedSelectedCategoryId
+
+
+getSelectedItem { portfolio, selectedItemId } selectedCategoryId =
+    case selectedItemId of
+        Nothing ->
+            Nothing
+
+        Just id ->
+            portfolio.items
+                |> List.filter (\i -> i.id == id && i.categoryId == selectedCategoryId)
+                |> List.head
 
 
 
