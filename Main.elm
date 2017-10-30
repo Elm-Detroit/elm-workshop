@@ -11,7 +11,9 @@ import Json.Decode.Pipeline as Pipeline exposing (decode, optional, required)
 
 initialModel : Model
 initialModel =
-    {}
+    { categories = []
+    , items = []
+    }
 
 
 type alias Model =
@@ -76,11 +78,21 @@ subscriptions =
 -- JSON Decoding
 
 
+categoriesDecoder : Decoder (List Category)
+categoriesDecoder =
+    Decode.at [ "categories" ] (Decode.list categoryDecoder)
+
+
 categoryDecoder : Decoder Category
 categoryDecoder =
     decode Category
         |> required "id" Decode.int
         |> required "label" Decode.string
+
+
+itemsDecoder : Decoder (List Item)
+itemsDecoder =
+    Decode.at [ "items" ] (Decode.list itemDecoder)
 
 
 itemDecoder : Decoder Item
