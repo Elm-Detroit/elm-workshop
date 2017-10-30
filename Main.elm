@@ -2,6 +2,7 @@ module Main exposing (..)
 
 import Html exposing (Html, div, h1, header, img, text)
 import Html.Attributes exposing (class, src, width)
+import Http
 import Json.Decode as Decode exposing (Decoder)
 import Json.Decode.Pipeline as Pipeline exposing (decode, optional, required)
 
@@ -9,14 +10,13 @@ import Json.Decode.Pipeline as Pipeline exposing (decode, optional, required)
 -- Model
 
 
-initialModel : Model
-initialModel =
-    { categories = []
-    , items = []
+type alias Model =
+    { portfolio : Portfolio
+    , selectedCategoryId : Maybe Int
     }
 
 
-type alias Model =
+type alias Portfolio =
     { categories : List Category
     , items : List Item
     }
@@ -34,6 +34,16 @@ type alias Item =
     , linkUrl : String
     , description : String
     , overlayColor : String
+    }
+
+
+initialModel : Model
+initialModel =
+    { portfolio =
+        { categories = []
+        , items = []
+        }
+    , selectedCategoryId = Nothing
     }
 
 
@@ -58,12 +68,34 @@ view model =
 
 
 type Msg
-    = None
+    = ApiResponse (Result Http.Error Portfolio)
+    | None
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        ApiResponse response ->
+            case response of
+                Ok response ->
+                    let
+                        updatedModel =
+                            { model | portfolio = response }
+
+                        x =
+                            Debug.log "Ok portfolio" updatedModel
+                    in
+                    ( updatedModel, Cmd.none )
+
+                Err error ->
+                    let
+                        x =
+                            Debug.log "Err error" error
+                    in
+                    ( model, Cmd.none )
+
+        None ->
+            ( model, Cmd.none )
 
 
 
@@ -75,12 +107,27 @@ subscriptions =
 
 
 
+-- Http
+
+
+getPortfolio : Cmd Msg
+getPortfolio =
+    let
+        url =
+            "http://www.mocky.io/v2/59f508453100005c065b870f"
+    in
+    Http.send ApiResponse (Http.get url portfolioDecoder)
+
+
+
 -- JSON Decoding
 
 
-categoriesDecoder : Decoder (List Category)
-categoriesDecoder =
-    Decode.at [ "categories" ] (Decode.list categoryDecoder)
+portfolioDecoder : Decoder Portfolio
+portfolioDecoder =
+    decode Portfolio
+        |> required "categories" (Decode.list categoryDecoder)
+        |> required "items" (Decode.list itemDecoder)
 
 
 categoryDecoder : Decoder Category
@@ -88,11 +135,6 @@ categoryDecoder =
     decode Category
         |> required "id" Decode.int
         |> required "label" Decode.string
-
-
-itemsDecoder : Decoder (List Item)
-itemsDecoder =
-    Decode.at [ "items" ] (Decode.list itemDecoder)
 
 
 itemDecoder : Decoder Item
@@ -131,4 +173,4 @@ main =
 
 
 init =
-    ( initialModel, Cmd.none )
+    ( initialModel, getPortfolio )
