@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Dialog
-import Html exposing (Html, br, button, div, h1, header, hr, img, nav, text)
+import Html exposing (Html, br, button, div, h1, h3, header, hr, img, nav, text)
 import Html.Attributes exposing (class, classList, src, type_, width)
 import Html.Events exposing (onClick)
 import Http
@@ -123,7 +123,7 @@ viewItems { portfolio } selectedCategoryId selectedItemId =
 viewItem item =
     div
         [ class "col-4 item-panel" ]
-        [ img [ src item.imageUrl, onClick (ItemClicked item.id) ] [] ]
+        [ img [ src item.imageUrl, onClick (ItemClicked item.id), class "img-fluid" ] [] ]
 
 
 viewSelectedItem item =
@@ -133,8 +133,15 @@ viewSelectedItem item =
                 Nothing ->
                     []
 
-                Just itemDetail ->
-                    [ text <| toString itemDetail.id ]
+                Just detail ->
+                    [ div [ class "col-6" ]
+                        [ img [ src detail.imageUrl, class "img-fluid" ] [] ]
+                    , div [ class "col-6" ]
+                        [ h3 [] [ text detail.title ]
+                        , hr [] []
+                        , text detail.description
+                        ]
+                    ]
     in
     div [ class "row selected-item-container" ]
         contents
@@ -178,6 +185,7 @@ update msg model =
                 updatedModel =
                     { model
                         | selectedCategoryId = Just categoryId
+                        , selectedItemId = Nothing
                     }
             in
             ( updatedModel, Cmd.none )

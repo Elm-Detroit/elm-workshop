@@ -39,8 +39,7 @@ h1 {
     margin-bottom: 15px;
 }
 
-.item-panel img {
-    width: 90%;
+.item-panel img , .selected-item-container img {
     padding: 4px;
     border: 1px solid #a9a9a9;
     cursor: pointer;
@@ -53,4 +52,8 @@ h1 {
 
 .btn-category {
     cursor: pointer !important;
+}
+
+.selected-item-container {
+    padding-top: 25px;
 }
