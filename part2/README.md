@@ -9,7 +9,7 @@ In this part, we'll start off with the basic frame of the app and look at each s
 
 #### Module and Imports
 
-The file starts off with the `module` definition:
+The [Main.elm](./Main.elm) file starts off with the `module` definition:
 
 `module Main exposing (..)`
 
