@@ -107,7 +107,7 @@ Where the key `123` or `124` would be the user's unique ID.
 
 ##### Tuple
 
-A tuple is an ordered collection of values. Tuples can consist of two or more elements and each element does not
+A tuple is an ordered collection of values. Tuples can consist of two or three elements and each element does not
 have to be the same type. In Elm tuples are created using the literal syntax of two surrounding parenthesis. Tuples
 can be used for something like an `x` and `y` on a grid or something more complex. 
 
