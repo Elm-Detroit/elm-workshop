@@ -3,7 +3,7 @@ Back to [Part 7](../part7/README.md)
 
 # Introduction to Elm (Part 8)
 
->Before getting started with this part, be sure to `cd` into the directory `part8` in your project and open the `Main.elm` file
+>Before getting started with this part, be sure to `cd` into the directory `part8` in your project run `npm install` and then open the `Main.elm` file
 
 Currently, we have no real way to _interact_ with the app, in this section, we'll wire up some new 
 messages that will be trigged by the `onClick` event for our category buttons as well as our `Item` images.
@@ -82,8 +82,7 @@ we're taking in a `Msg` and a `Model`, updating that `Model` accordingly by crea
 `updatedModel` since values in Elm are immutable and then _scheduling_ any necessary commands (we don't
 need to run any commands here so we use `Cmd.none`).
 
-At this point, if we run: `elm-live Main.elm --output=static/js/elm.js --pushstate --open --debug`, we
-should be able to click around on both categories as well as items and update the rendered HTML:
+At this point, if we run: `npm start`, we should be able to click around on both categories as well as items and update the rendered HTML:
 
 ![App Preview](../static/images/app-item-selected.png)
 

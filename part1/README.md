@@ -73,7 +73,7 @@ A `List` is used to store an ordered iterable collection of values where every v
 ##### Array
 Elm's `Array` structure is similar to a `List` but it also supports positional access via it's helper functions like `Array.get`, `Array.set` and more. An example of using `Array.get` is shown below:
 
-```
+```elm
 a = Array.fromList [9,5,7,6]
 b = Array.get 3 a
 b == Just 6
@@ -81,7 +81,7 @@ b == Just 6
 
 One interesting note here is that `b == Just 6` instead of `6`, the reason for this is that `Array.get` returns a `Maybe` type. `Maybe` is used in places where the value might not exist. Similar to nullable values in other languages. In this case if we tried to call `Array.get 13 a`, we'd get back `Nothing` because index `13` does not exist. 
 
-> We'll talk more about `Maybe` later, but for now, just know that `Maybe` is Elm's way of defining something > that is _either_ `Nothing` or `Just something` where `something` is the value.
+> We'll talk more about `Maybe` later, but for now, just know that `Maybe` is Elm's way of defining something that is _either_ `Nothing` or `Just something` where `something` is the value.
 
 ##### Set
 Similar to a `List` but has some unique properties. A `Set` is a collection of unique values. The values can be any `comparable` type. This includes `Int`, `Float`, `Time`, `Char`, `String`, and tuples or lists of comparable types. Sets are good for instances when you need unique values. A note about `Set` is that when accessing items, they are referenced by value and not index. For instance, the documentation for `Set.remove` states: "Remove a value from a `Set`. If the value is not found, no changes are made."
@@ -92,7 +92,7 @@ We brought up a new term here `comparable`, this is a special type classificatio
 A _dictionary_ mapping unique _keys_ to _values_. The keys can be any `comparable` type such as `Int`, `Float`, `Time`, `Char`,
 `String`, and tuples or lists of `comparable` types. `Dict` is good for times when you need to store data that will need to be updated (or accessed by a unique key). In JavaScript a `Dict` would probably be used for times where you would use JSON similar to the following:
  
-```
+```json
 {
   "123": {"username": "john_mccauley", "firstname": "John", "lastname": "McCauley"},
   "124": {"username": "james_smith", "firstname": "James", "lastname": "Smith"},
@@ -107,11 +107,9 @@ Where the key `123` or `124` would be the user's unique ID.
 
 ##### Tuple
 
-A tuple is an ordered collection of values. Tuples can consist of two or three elements and each element does not
-have to be the same type. In Elm tuples are created using the literal syntax of two surrounding parenthesis. Tuples
-can be used for something like an `x` and `y` on a grid or something more complex. 
+A tuple is an ordered collection of values. Tuples can consist of two or three elements and each element does not have to be the same type. In Elm tuples are created using the literal syntax of two surrounding parenthesis. Tuples can be used for something like an `x` and `y` on a grid or something more complex. 
 
-```
+```elm
 # Tuple example
 position = (50, 123)
 ```
@@ -120,10 +118,12 @@ position = (50, 123)
 
 ##### Records
 
-A record is a lightweight labelled data structure (similar to an `object` in JavaScript).
+A record is a lightweight labeled data structure (similar to an `object` in JavaScript).
 For instance, if we wanted to represent a point we could just create a record with an `x` and `y` field:
 
-`{ x = 3, y = 4 }`
+```elm
+{ x = 3, y = 4 }
+```
 
 Despite the similarities to `object` in JavaScript, records have a few major differences:
 

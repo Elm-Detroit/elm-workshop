@@ -3,7 +3,7 @@ Back to [Part 1](../part1/README.md)
 
 # Introduction to Elm (Part 2)
 
->Before getting started with this part, be sure to `cd` into the directory `part2` in your project and open the `Main.elm` file
+>Before getting started with this part, be sure to `cd` into the directory `part2` in your project run `npm install` and then open the `Main.elm` file
 
 In this part, we'll start off with the basic frame of the app and look at each section.
 
@@ -126,14 +126,13 @@ init =
 
 #### An illustration of how it works together
 
-![The Elm runtime](https://guide.elm-lang.org/architecture/effects/program.svg)
+![The Elm runtime](https://guide.elm-lang.org/effects/diagrams/sandbox.svg)
 
 #### Starting the app
 
-Let's start out by moving into the directory for this part by running `cd part2` in a terminal
+Let's start out by moving into the directory for this part by running `cd part2` in a terminal. Next you will need to install npm dependencies by running `npm install`.
 
-One of the easiest ways to run an Elm app on your computer _without_ having an HTML file to embed it into
-is to run the Elm Reactor. We can do this now by simply running the following command in our terminal `elm reactor`.
+One of the easiest ways to run an Elm app on your computer _without_ having an HTML file to embed it into is to run the Elm Reactor. If you have the Elm 0.19 platform installed globally we can do this now by simply running the following command in our terminal `elm reactor` otherwise you can run `npm start` or `npx elm -- reactor` to run the locally installed version of the Elm Platform that was installed through npm.
 
 Once you run the command in your terminal of choice, you should see output like the following:
 

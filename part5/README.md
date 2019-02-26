@@ -3,18 +3,15 @@ Back to [Part 4](../part4/README.md)
 
 # Introduction to Elm (Part 5)
 
->Before getting started with this part, be sure to `cd` into the directory `part5` in your project and open the `Main.elm` file
+>Before getting started with this part, be sure to `cd` into the directory `part5` in your project run `npm install` and then open the `Main.elm` file.
 
-In this part, we'll use the `Http` library to send a request to the API and create the code necessary to receive that
-message by modifying the `update` function to use a `case` expression to route our updates based on the `Msg` that was
-sent.
+In this part, we'll use the `Http` library to send a request to the API and create the code necessary to receive that message by modifying the `update` function to use a `case` expression to route our updates based on the `Msg` that was sent.
 
 >Messages can be sent by user input (onClick etc.), as the result of a command (`Cmd`) or as the result of a subscription (`Sub`)  
 
 So now we know that we want to route messages that come back from the API to `ApiResponse`, so how do we go about doing that?
 
-The first step is to change the `update` function so that it uses a `case` expression, here's a quick example of using
-`case` to handle a `Maybe`:
+The first step is to change the `update` function so that it uses a `case` expression, here's a quick example of using `case` to handle a `Maybe`:
 
 ```elm
 case maybe of
@@ -35,8 +32,7 @@ update msg model =
             ( model, Cmd.none )
 ```
 
-For now, both of our messages cause the same effect to happen (nothing!). Let's modify the `ApiResponse` case so that it
-receives the `response` from the API.
+For now, both of our messages cause the same effect to happen (nothing!). Let's modify the `ApiResponse` case so that it receives the `response` from the API.
 
 ```elm
         ApiResponse response ->
@@ -51,16 +47,14 @@ receives the `response` from the API.
                 Err error ->
                     let
                         updatedModel =
-                            { model | errorMessage = "An error occurred while attempted to fetch your portfolio" }
+                            { model | errorMessage = "An error occurred while attempting to fetch your portfolio" }
                     in
                     ( updatedModel, Cmd.none )
 ```
 
-So, we're now updating the `Model` if we get an `Ok response` as the result from `Http.send` if we get an `Err error` however
-we'll update the `errorMessage` field of the `Model` (we still need to add this) with that message.
+So, we're now updating the `Model` if we get an `Ok response` as the result from `Http.send` if we get an `Err error` however we'll update the `errorMessage` field of the `Model` (we still need to add this) with that message.
 
-Next, let's add two new fields to our `Model`, the first is an `errorMessage` and the second is an `apiUrl` that 
-we'll use for our request:
+Next, let's add two new fields to our `Model`, the first is an `errorMessage` and the second is an `apiUrl` that we'll use for our request:
 
 ```elm
 type alias Model =
@@ -70,8 +64,7 @@ type alias Model =
     }
 ```
 
-Since, we've updated our `Model`, we'll need to update our `initialModel` function as well. We're going to make a few
-key updates here:
+Since, we've updated our `Model`, we'll need to update our `initialModel` function as well. We're going to make a few key updates here:
 
 Change `initialModel` from
 

@@ -3,7 +3,7 @@ Back to [Part 3](../part3/README.md)
 
 # Introduction to Elm (Part 4)
 
->Before getting started with this part, be sure to `cd` into the directory `part4` in your project and open the `Main.elm` file
+>Before getting started with this part, be sure to `cd` into the directory `part4` in your project run `npm install` and then open the `Main.elm` file.
 
 In part 4, we'll introduce Elm's "custom type" and add to our `Msg` custom type as well as installing some new packages
 and updating our imports section.

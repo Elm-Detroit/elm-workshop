@@ -3,7 +3,7 @@ Back to [Part 5](../part5/README.md)
 
 # Introduction to Elm (Part 6)
 
->Before getting started with this part, be sure to `cd` into the directory `part6` in your project and open the `Main.elm` file
+>Before getting started with this part, be sure to `cd` into the directory `part6` in your project run `npm install` and then open the `Main.elm` file
 
 In this section, we'll explain JSON decoders and how they snap together like LEGOs to transform
 a string of JSON into concrete Elm types.

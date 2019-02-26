@@ -4,7 +4,8 @@
   "description": "Script for running elm-package install --yes and elm-live",
   "main": "index.js",
   "scripts": {
-    "start": "npm install && elm-live Main.elm -- --output=static/js/elm.js --debug"
+    "start": "npm install && elm-reactor",
+    "start:live": "npm install && elm-live Main.elm -- --output=static/js/elm.js --debug"
   },
   "author": "Mike Onslow",
   "license": "ISC",
