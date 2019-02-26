@@ -63,7 +63,7 @@ view model =
 
 
 #### Update
-The `update` function will be called by `Html.program` each time a message is received.
+The `update` function will be called by `Browser.element` each time a message is received.
 This update function responds to messages (`Msg`), updating the model and returning commands (`Cmd`) as needed.
 
 ```elm
